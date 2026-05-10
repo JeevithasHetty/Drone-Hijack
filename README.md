@@ -242,6 +242,4 @@ The dashboard includes:
 
 ---
 
-# 👨‍💻 Author
 
-Developed as a real-time AI-powered cybersecurity and Digital Twin project for drone threat monitoring and anomaly detection.
