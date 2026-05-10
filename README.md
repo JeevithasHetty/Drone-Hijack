@@ -122,6 +122,37 @@ The project uses a drone communication telemetry dataset containing:
 
 ---
 
+# 🔄 Real-Time Digital Twin Workflow
+
+| Real-World Drone System                         | AeroTwin Sentinel Simulation                                            |
+| ----------------------------------------------- | ----------------------------------------------------------------------- |
+| Physical drone sends live telemetry             | Drone simulator generates live telemetry                                |
+| Sensors monitor GPS, latency, and signal health | Simulator creates telemetry such as GPS integrity, RTT, and packet loss |
+| Digital Twin mirrors drone state virtually      | Dashboard and 3D drone act as the Digital Twin                          |
+| AI continuously monitors communication patterns | Isolation Forest analyzes telemetry in real time                        |
+| Cyber attacks affect communication stability    | Attack simulator injects GPS spoofing and signal anomalies              |
+| Security systems trigger alerts and mitigation  | AI detects anomalies and activates defense alerts                       |
+
+### Real-Time Processing Flow
+
+```text
+Drone Simulator
+      ↓
+Digital Twin Update
+      ↓
+AI Anomaly Detection
+      ↓
+Threat Detection
+      ↓
+Defense Alert Activation
+      ↓
+Live Dashboard Visualization
+```
+
+The system continuously generates telemetry every second, analyzes the data using AI, and updates the dashboard in real time to simulate how a real drone cybersecurity monitoring platform operates.
+
+---
+
 # 🔒 Cybersecurity Concepts Covered
 
 * AI-Based Intrusion Detection
@@ -211,4 +242,6 @@ The dashboard includes:
 
 ---
 
+# 👨‍💻 Author
 
+Developed as a real-time AI-powered cybersecurity and Digital Twin project for drone threat monitoring and anomaly detection.
