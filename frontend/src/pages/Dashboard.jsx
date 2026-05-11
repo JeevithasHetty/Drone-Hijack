@@ -1,41 +1,15 @@
 import { useEffect, useState } from "react"
+import axios from "axios"
 
-import API from "../services/api"
-
-import TelemetryPanel from "../components/TelemetryPanel"
-import ThreatPanel from "../components/ThreatPanel"
 import LiveChart from "../components/LiveChart"
 import Radar from "../components/Radar"
 import Drone3D from "../components/Drone3D"
+
 function Dashboard() {
 
     const [data, setData] = useState(null)
+
     const [history, setHistory] = useState([])
-
-    const fetchTelemetry = async () => {
-
-        const response = await API.get("/telemetry")
-
-        setData(response.data)
-
-setHistory(prev => [
-
-    ...prev.slice(-9),
-
-    {
-
-        time: new Date().toLocaleTimeString(),
-
-        signal_strength:
-            response.data.telemetry.signal_strength,
-
-        packet_loss_rate:
-            response.data.telemetry.packet_loss_rate
-
-    }
-
-])
-    }
 
     useEffect(() => {
 
@@ -47,64 +21,54 @@ setHistory(prev => [
 
     }, [])
 
-    const triggerAttack = async () => {
+    const fetchTelemetry = async () => {
 
-        await API.get("/toggle_attack")
+        const response = await axios.get(
+            "http://127.0.0.1:8000/telemetry"
+        )
+
+        setData(response.data)
+
+        setHistory(prev => [
+
+            ...prev.slice(-10),
+
+            {
+                time: new Date().toLocaleTimeString(),
+
+                signal_strength:
+                    response.data.telemetry.signal_strength,
+
+                packet_loss_rate:
+                    response.data.telemetry.packet_loss_rate
+            }
+        ])
+    }
+
+    const toggleAttack = async () => {
+
+        await axios.get(
+            "http://127.0.0.1:8000/toggle_attack"
+        )
     }
 
     if (!data) {
 
-        return (
-
-            <div className="text-white p-10">
-                Loading...
-            </div>
-        )
+        return <div>Loading...</div>
     }
 
     return (
 
-        <div className="min-h-screen bg-slate-950 text-white p-10">
+        <div className="min-h-screen bg-black text-white p-6">
 
-            <h1 className="text-6xl font-bold mb-10 text-cyan-400">
-
+            <h1 className="text-5xl font-bold text-cyan-400 mb-8 text-center tracking-wide">
                 AeroTwin Sentinel
-
             </h1>
-
-            <button
-                onClick={triggerAttack}
-                className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-xl text-xl mb-10"
-            >
-                Toggle Cyber Attack
-            </button>
-
-            <div className="grid grid-cols-2 gap-10">
-
-                <TelemetryPanel telemetry={data.telemetry} />
-
-                <ThreatPanel
-    anomaly={data.anomaly}
-    anomaly_score={data.anomaly_score}
-    defense={data.defense}
-/>
-<div className="mt-10">
-
-    <LiveChart history={history} />
-    <div className="mt-10">
-
-    <Radar />
-    <div className="mt-10">
-
-   <Drone3D anomaly={data.anomaly} />
-
-</div>
-
-</div>
-
-</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <LiveChart data={history} />
+                <Radar data={data} />
             </div>
-
+            <Drone3D data={data} />
         </div>
     )
 }
